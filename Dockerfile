@@ -1,6 +1,17 @@
-FROM python:3.9 
-# Or any preferred Python version.
-ADD . .
-RUN apt install pipenv
+FROM python:3.9-slim-buster
 
-CMD [“/bin/bash”] 
+RUN apt update && apt install -y pipenv 
+
+ENV PORT=9090
+WORKDIR /usr/app
+
+COPY Pipfile .
+COPY .env .
+RUN pipenv --python 3.9
+RUN pipenv install
+
+COPY ./src ./src
+
+EXPOSE ${PORT}
+
+CMD ["pipenv","run","flask","run"] 
