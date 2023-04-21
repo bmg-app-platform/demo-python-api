@@ -2,12 +2,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: demo-python-application-service
+  labels:
+    app: {{ template "demo-python-app.name" . }}
+    chart: {{ template "demo-python-app.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
-    - targetPort: 9090
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
       name: flask
-      port: 9090
       protocol: TCP
   selector:
-    app: demo-python-application
+    app: {{ template "demo-python-app.name" . }}
+    release: {{ .Release.Name }}
