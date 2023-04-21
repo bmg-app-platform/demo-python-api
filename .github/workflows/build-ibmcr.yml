@@ -1,12 +1,4 @@
-# This workflow will build a docker container, publish it to IBM Container Registry, and deploy it to IKS when there is a push to the "main" branch.
-#
-# To configure this workflow:
-#
-# 1. Ensure that your repository contains a Dockerfile
-# 2. Setup secrets in your repository by going to settings: Create ICR_NAMESPACE and IBM_CLOUD_API_KEY
-# 3. Change the values for the IBM_CLOUD_REGION, REGISTRY_HOSTNAME, IMAGE_NAME, IKS_CLUSTER, DEPLOYMENT_NAME, and PORT
-
-name: Build and Deploy to IKS
+name: Build and Publish to IBM Containers Registry
 
 on:
   push:
@@ -16,17 +8,14 @@ on:
 env:
   GITHUB_SHA: ${{ github.sha }}
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
-  IBM_CLOUD_REGION: us-south
-  ICR_NAMESPACE: ${{ secrets.ICR_NAMESPACE }}
-  REGISTRY_HOSTNAME: us.icr.io
-  IMAGE_NAME: iks-test
-  IKS_CLUSTER: example-iks-cluster-name-or-id
-  DEPLOYMENT_NAME: iks-test
-  PORT: 5001
+  IBM_CLOUD_REGION: ap-south
+  ICR_NAMESPACE: demo-automation
+  REGISTRY_HOSTNAME: au.icr.io
+  IMAGE_NAME: demo-python-app
 
 jobs:
-  setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+  ci-automation:
+    name: Setup, Build, Publish
     runs-on: ubuntu-latest
     environment: production
     steps:
