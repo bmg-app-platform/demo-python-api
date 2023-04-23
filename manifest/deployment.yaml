@@ -1,38 +1,38 @@
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: demo-python-application
-  spec:
-    replicas: 2
-    selector:
-      matchLabels:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-python-application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demo-python-application
+  template:
+    metadata:
+      labels:
         app: demo-python-application
-    template:
-      metadata:
-        labels:
-          app: demo-python-application
-      spec:
-        nodeSelector:
-          kubernetes.io/os: linux
-        containers:
-          - name: demo-python-application
-            image: siammakroepaymentregistry.azurecr.io/scb_verifyslip_poc
-            env:
-            - name: APP_NAME
-              value: demo-python-application
-            ports:
-              - containerPort: 9090
-            resources:
-              limits:
-                cpu: 100m
-                memory: 1000Mi
-              requests:
-                cpu: 50m
-                memory: 400Mi
-            livenessProbe:
-              httpGet:
-                path: /livez
-                port: 9090
-                httpHeaders:
-              initialDelaySeconds: 20
-              periodSeconds: 20
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: demo-python-application
+          image: siammakroepaymentregistry.azurecr.io/scb_verifyslip_poc
+          env:
+          - name: APP_NAME
+            value: demo-python-application
+          ports:
+            - containerPort: 9090
+          resources:
+            limits:
+              cpu: 100m
+              memory: 1000Mi
+            requests:
+              cpu: 50m
+              memory: 400Mi
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 9090
+              httpHeaders:
+            initialDelaySeconds: 20
+            periodSeconds: 20

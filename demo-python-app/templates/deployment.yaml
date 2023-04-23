@@ -1,50 +1,47 @@
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: {{ template "demo-python-app.fullname" . }}
-    labels:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "demo-python-app.fullname" . }}
+  labels:
+    app: {{ template "demo-python-app.name" . }}
+    chart: {{ template "demo-python-app.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
       app: {{ template "demo-python-app.name" . }}
-      chart: {{ template "demo-python-app.chart" . }}
       release: {{ .Release.Name }}
-      heritage: {{ .Release.Service }}
-  spec:
-    replicas: {{ .Values.replicaCount }}
-    selector:
-      matchLabels:
+  template:
+    metadata:
+      labels:
         app: {{ template "demo-python-app.name" . }}
         release: {{ .Release.Name }}
-    template:
-      metadata:
-        labels:
-          app: {{ template "demo-python-app.name" . }}
-          release: {{ .Release.Name }}
-      spec:
-        {{ if .Values.inf.registry -}}
-        imagePullSecrets:
-        - name: {{ .Values.inf.registry.secretName }}
-        {{- end }}
-        nodeSelector:
-          kubernetes.io/os: linux
-        containers:
-          - name: {{ .Chart.Name }}
-            image: "{{ template "fqdn-image" . }}:{{ .Values.image.tag }}"
-            imagePullPolicy: {{ .Values.image.pullPolicy }}
-            env:
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: {{ .Values.image.secretName }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
             - name: APP_NAME
               value: {{ .Chart.Name }}
-            ports:
-              - containerPort: {{ .Values.service.port }}
-            resources:
-              limits:
-                cpu: {{ .Values.resources.limits.cpu }}
-                memory: {{ .Values.resources.limits.memory }}
-              requests:
-                cpu: {{ .Values.resources.requests.cpu }}
-                memory: {{ .Values.resources.requests.memory }}
-            livenessProbe:
-              httpGet:
-                path: /livez
-                port: {{ .Values.service.port }}
-                httpHeaders:
-              initialDelaySeconds: 20
-              periodSeconds: 20
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 20

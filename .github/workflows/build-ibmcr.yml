@@ -47,3 +47,5 @@ jobs:
     - name: Push the image to ICR
       run: |
         docker push $REGISTRY_HOSTNAME/$ICR_NAMESPACE/$IMAGE_NAME:$GITHUB_SHA
+
+
