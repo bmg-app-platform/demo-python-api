@@ -1,24 +1,14 @@
 name: Create and publish a Docker image
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - 'feature/**'
+  push:
+    branches: ['main']
 
 env:
   REGISTRY: docker.io
   IMAGE_NAME: ${{ vars.REGISTRY_NAME }}
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo The PR was merged
-
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
@@ -50,13 +40,23 @@ jobs:
           tags: ${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
       
+      - name: Checkout Target Repository
+        uses: actions/checkout@v3
+        with:
+          repository: bmg-app-platform/deployment-application
+          path: demo-python-app
+          token: ${{ secrets.GITHUB_TOKEN }} 
+      
       - name: Update Image Version in the related HelmChart values.yaml
         uses: fjogeleit/yaml-update-action@main
         with:
-          valueFile: 'demo-python-app/values.yaml'
+          valueFile: 'values.yaml'
           propertyPath: 'image.tag'
           value: ${{ github.sha }}
-          branch: deployment/${{ steps.image.outputs.version }}
-          targetBranch: main
+          repository: owner/target-repository
+          branch: deployment/${{ github.sha }}
+          targetBranch: development
           createPR: true
           message: 'Update Image Version to ${{ github.sha }}'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          workDir: demo-python-app
