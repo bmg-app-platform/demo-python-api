@@ -1,38 +1,47 @@
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: demo-python-application
-  spec:
-    replicas: 2
-    selector:
-      matchLabels:
-        app: demo-python-application
-    template:
-      metadata:
-        labels:
-          app: demo-python-application
-      spec:
-        nodeSelector:
-          kubernetes.io/os: linux
-        containers:
-          - name: demo-python-application
-            image: siammakroepaymentregistry.azurecr.io/scb_verifyslip_poc
-            env:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "demo-python-app.fullname" . }}
+  labels:
+    app: {{ template "demo-python-app.name" . }}
+    chart: {{ template "demo-python-app.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "demo-python-app.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "demo-python-app.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      imagePullSecrets:
+        - name: {{ .Values.image.secretName }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
             - name: APP_NAME
-              value: demo-python-application
-            ports:
-              - containerPort: 9090
-            resources:
-              limits:
-                cpu: 100m
-                memory: 1000Mi
-              requests:
-                cpu: 50m
-                memory: 400Mi
-            livenessProbe:
-              httpGet:
-                path: /livez
-                port: 9090
-                httpHeaders:
-              initialDelaySeconds: 20
-              periodSeconds: 20
+              value: {{ .Chart.Name }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 20
