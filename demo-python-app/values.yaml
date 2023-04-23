@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: au.icr.io/demo-automation/demo-python-app/demo-python-app
+  repository: porrametp/demo-application
   pullPolicy: IfNotPresent
-  tag: d2499300a9e7dc4416a3b921982e2861b19ac30e
+  tag: main
   secretName: ibmcr-pull-image
 
 imagePullSecrets: []
