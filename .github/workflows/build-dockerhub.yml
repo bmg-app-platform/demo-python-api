@@ -66,11 +66,10 @@ jobs:
       - run: echo ${{ env.GITHUB_OUTPUT }}
 
       - name: Checkout Target Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: bmg-app-platform/deployment-application
           ref: main
-          path: deployment-application
           token: ${{ secrets.GITHUB_TOKEN }} 
       
       - name: Update Image Version in the related HelmChart values.yaml
