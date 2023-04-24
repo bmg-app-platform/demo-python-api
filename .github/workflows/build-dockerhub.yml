@@ -70,7 +70,7 @@ jobs:
         with:
           repository: bmg-app-platform/deployment-application
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }} 
+          token: ${{ secrets.REPOSITORY_TOKEN }} 
       
       - name: Update Image Version in the related HelmChart values.yaml
         uses: fjogeleit/yaml-update-action@main
@@ -83,5 +83,5 @@ jobs:
           targetBranch: main
           createPR: true
           message: 'Update Image Version to ${{ env.GITHUB_OUTPUT }}'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPOSITORY_TOKEN }}
           workDir: demo-python-app
