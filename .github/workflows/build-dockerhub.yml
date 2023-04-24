@@ -59,13 +59,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       
+      - run: echo ${{ steps.meta.outputs.tags }} >> $GITHUB_OUTPUT
+      
 
   update-image-tag-for-deployment:
     runs-on: ubuntu-latest
     needs: build-and-push-image
     steps:    
-      - run: echo ${{ needs.build-and-push-image.steps.meta.outputs.tags }}
-      
+      - run: echo ${{ env.GITHUB_OUTPUT }}
+
       - name: Checkout Target Repository
         uses: actions/checkout@v3
         with:
@@ -79,11 +81,11 @@ jobs:
         with:
           valueFile: 'demo-python-app/values.yaml'
           propertyPath: 'image.tag'
-          value: ${{ needs.build-and-push-image.steps.meta.outputs.tags }}
+          value: ${{ env.GITHUB_OUTPUT }}
           repository: bmg-app-platform/deployment-application
-          branch: ${{ needs.build-and-push-image.steps.meta.outputs.tags }}
+          branch: deployment/${{ env.GITHUB_OUTPUT }}
           targetBranch: main
           createPR: true
-          message: 'Update Image Version to ${{ needs.build-and-push-image.steps.meta.outputs.tags }}'
+          message: 'Update Image Version to ${{ env.GITHUB_OUTPUT }}'
           token: ${{ secrets.GITHUB_TOKEN }}
           workDir: demo-python-app
