@@ -25,7 +25,7 @@ jobs:
       
       - name: Set outputs
         id: vars
-        run: echo $(git rev-parse --short HEAD) >> $GITHUB_OUTPUT
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Check outputs
         run: echo ${{ steps.vars.outputs.sha_short }}
@@ -51,14 +51,13 @@ jobs:
           tags: |
             type=sha
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@v4
+#        with:
+#          context: .
+#          push: true
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}     
 
   update-image-tag-for-deployment:
     runs-on: ubuntu-latest
