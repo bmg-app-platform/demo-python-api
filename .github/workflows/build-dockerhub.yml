@@ -59,7 +59,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       
-      - run: echo ${{ steps.meta.outputs.tags }} >> $GITHUB_OUTPUT
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       
 
   update-image-tag-for-deployment:
