@@ -25,7 +25,7 @@ jobs:
       
       - name: Set outputs
         id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo $(git rev-parse --short HEAD) >> $GITHUB_OUTPUT
 
       - name: Check outputs
         run: echo ${{ steps.vars.outputs.sha_short }}
@@ -67,7 +67,7 @@ jobs:
       - run: echo ${{ env.GITHUB_OUTPUT }}
 
       - name: Checkout Target Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           repository: bmg-app-platform/deployment-application
           ref: main
