@@ -69,7 +69,7 @@ jobs:
     steps:    
       - env:
           GITHUB_SHA_SHORT: ${{needs.build-and-push-image.outputs.sha-image-tag}}
-        run: echo ${{ GITHUB_SHA_SHORT }}
+        run: echo ${{ env.GITHUB_SHA_SHORT }}
 
       - name: Checkout Target Repository
         uses: actions/checkout@v3
@@ -83,11 +83,11 @@ jobs:
         with:
           valueFile: 'demo-python-app/values.yaml'
           propertyPath: 'image.tag'
-          value: ${{ GITHUB_SHA_SHORT }}
+          value: ${{ env.GITHUB_SHA_SHORT }}
           repository: bmg-app-platform/deployment-application
-          branch: deployment/${{ GITHUB_SHA_SHORT }}
+          branch: deployment/${{ env.GITHUB_SHA_SHORT }}
           targetBranch: main
           createPR: true
-          message: 'Update Image Version to ${{ GITHUB_SHA_SHORT }}'
+          message: 'Update Image Version to ${{ env.GITHUB_SHA_SHORT }}'
           token: ${{ secrets.REPOSITORY_TOKEN }}
           workDir: deployment-application
