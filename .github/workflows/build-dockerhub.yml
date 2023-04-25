@@ -79,6 +79,8 @@ jobs:
       
       - name: Update Image Version in the related HelmChart values.yaml
         uses: fjogeleit/yaml-update-action@main
+        env:
+          GITHUB_SHA_SHORT: ${{needs.build-and-push-image.outputs.sha-image-tag}}
         with:
           valueFile: 'demo-python-app/values.yaml'
           propertyPath: 'image.tag'
