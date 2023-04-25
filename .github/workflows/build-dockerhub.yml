@@ -69,8 +69,7 @@ jobs:
     steps:    
       - env:
           GITHUB_SHA_SHORT: ${{needs.build-and-push-image.outputs.sha-image-tag}}
-
-      - run: echo ${{ GITHUB_SHA_SHORT }}
+        run: echo ${{ GITHUB_SHA_SHORT }}
 
       - name: Checkout Target Repository
         uses: actions/checkout@v3
