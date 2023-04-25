@@ -18,6 +18,10 @@ not_ready = [
 
 jobs = []
 
+versions = [
+    { 'application': os.getenv('APP_NAME'), 'version': 'v1.0.0' }
+]
+
 print("API running on port : {} ".format(os.getenv('FLASK_RUN_PORT')))
 
 @app.route("/livez")
@@ -39,3 +43,7 @@ def get_jobs():
 def add_jobs():
     jobs.append(request.get_json())
     return '', 204
+
+@app.route("/version")
+def get_version():
+    return jsonify(versions)
