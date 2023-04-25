@@ -10,7 +10,6 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: ${{ vars.REGISTRY_NAME }}
-  GITHUB_OUTPUT: ""
 
 jobs:
   build-and-push-image:
@@ -69,7 +68,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: bmg-app-platform/deployment-application
-          ref: main
           token: ${{ secrets.REPOSITORY_TOKEN }} 
       
       - name: Update Image Version in the related HelmChart values.yaml
