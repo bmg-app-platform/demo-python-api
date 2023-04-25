@@ -68,6 +68,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: bmg-app-platform/deployment-application
+          path: deployment-application
           token: ${{ secrets.REPOSITORY_TOKEN }} 
       
       - name: Update Image Version in the related HelmChart values.yaml
