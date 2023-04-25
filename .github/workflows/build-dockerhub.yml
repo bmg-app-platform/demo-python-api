@@ -10,7 +10,6 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: ${{ vars.REGISTRY_NAME }}
-  GITHUB_SHA_SHORT: ''
 
 jobs:
   build-and-push-image:
@@ -85,6 +84,7 @@ jobs:
           propertyPath: 'image.tag'
           value: ${{ env.GITHUB_SHA_SHORT }}
           repository: bmg-app-platform/deployment-application
+          masterBranchName: main
           branch: deployment/${{ env.GITHUB_SHA_SHORT }}
           targetBranch: main
           createPR: true
