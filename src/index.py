@@ -19,7 +19,7 @@ not_ready = [
 jobs = []
 
 versions = [
-    { 'application': os.getenv('APP_NAME'), 'version': 'v1.0.0' }
+    { 'application': os.getenv('APP_NAME'), 'version': 'v199' }
 ]
 
 print("API running on port : {} ".format(os.getenv('FLASK_RUN_PORT')))
