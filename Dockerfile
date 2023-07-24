@@ -2,7 +2,7 @@ FROM python:3.9-slim-buster
 
 RUN apt update && apt install -y pipenv 
 
-ENV PORT=9090
+ENV PORT=8999
 WORKDIR /usr/app
 
 COPY Pipfile .
