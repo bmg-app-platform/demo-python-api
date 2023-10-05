@@ -30,7 +30,8 @@ jobs = []
 versions = [
     { 
         'application': os.getenv('APP_NAME'), 
-        'version': 'v10.0.0' 
+        'version': 'v10.0.0',
+        'username': 'Porramet Promsang' 
     }
 ]
 
